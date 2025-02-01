@@ -9,7 +9,7 @@ const SearchInput = ({ onSearch }) => {
     e.preventDefault();
     if (city.trim() !== '') {
       onSearch(city);
-      setCity('');
+      // setCity('');
     }
   };
 

@@ -4,15 +4,27 @@ import SearchInput from './components/SearchInput/SearchInput';
 import WeatherDisplay from './components/WeatherDisplay/WeatherDisplay';
 import ForecastDisplay from './components/ForecastDisplay/ForecastDisplay';
 import ErrorDisplay from './components/ErrorDisplay/ErrorDisplay';
+import Layout from './components/Layout/Layout';
 import useWeatherApi from './hooks/useWeatherApi';
 import useForecastApi from './hooks/useForecastApi';
 import { WeatherContext } from './context/WeatherContext';
+import styles from './components/Layout/Layout.module.css';
 
 const App = () => {
   const { city, setCity, unit, setUnit } = useContext(WeatherContext);
   const [searchCity, setSearchCity] = useState(city);
-  const { weather, error: weatherError, loading: weatherLoading } = useWeatherApi(searchCity, unit);
-  const { forecast, error: forecastError, loading: forecastLoading } = useForecastApi(searchCity, unit);
+  const { 
+    weather, 
+    error: weatherError, 
+    loading: weatherLoading,
+    refetch: refetchWeather 
+  } = useWeatherApi(searchCity, unit);
+  const { 
+    forecast, 
+    error: forecastError, 
+    loading: forecastLoading,
+    refetch: refetchForecast 
+  } = useForecastApi(searchCity, unit);
 
   // When context city changes (for example, on load), update searchCity so hook runs
   useEffect(() => {
@@ -30,27 +42,39 @@ const App = () => {
     setUnit(unit === 'metric' ? 'imperial' : 'metric');
   };
 
+  const handleRetry = () => {
+    refetchWeather();
+    refetchForecast();
+  };
+
   const loading = weatherLoading || forecastLoading;
   const error = weatherError || forecastError;
 
   return (
-    <div>
-      <h1 style={{ textAlign: 'center' }}>React Weather Dashboard</h1>
-      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-        <button onClick={toggleUnit}>
+    <Layout>
+      <h1 className={styles.title}>Eclipse Dashboard</h1>
+      <div className={styles.unitToggle}>
+        <button 
+          onClick={toggleUnit}
+          className={styles.button}
+        >
           Switch to {unit === 'metric' ? '°F' : '°C'}
         </button>
       </div>
       <SearchInput onSearch={handleSearch} />
-      {loading && <p style={{ textAlign: 'center' }}>Loading...</p>}
-      <ErrorDisplay message={error} />
+      {loading && (
+        <div className={styles.loadingContainer}>
+          Loading...
+        </div>
+      )}
+      <ErrorDisplay message={error} onRetry={handleRetry} />
       {weather && !error && (
         <>
           <WeatherDisplay weather={weather} unit={unit} />
           <ForecastDisplay forecast={forecast} unit={unit} />
         </>
       )}
-    </div>
+    </Layout>
   );
 };
 

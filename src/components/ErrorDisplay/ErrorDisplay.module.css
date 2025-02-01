@@ -5,3 +5,64 @@
     margin: 1rem;
   }
   
+.errorContainer {
+  margin: 2rem auto;
+  max-width: 600px;
+  padding: 0 1rem;
+}
+
+.errorContent {
+  background: rgba(255, 99, 71, 0.1);
+  border: 1px solid rgba(255, 99, 71, 0.3);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  backdrop-filter: blur(10px);
+}
+
+.errorIcon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.errorTitle {
+  color: #d32f2f;
+  margin: 0 0 0.5rem 0;
+}
+
+.errorMessage {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.retryButton {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin: 1rem 0;
+}
+
+.retryButton:hover {
+  background: #b71c1c;
+}
+
+.helpText {
+  margin-top: 1rem;
+  text-align: left;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.helpText ul {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.5rem;
+}
+
+.helpText li {
+  margin: 0.25rem 0;
+}
+  

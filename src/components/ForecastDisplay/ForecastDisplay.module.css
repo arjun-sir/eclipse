@@ -6,38 +6,54 @@
 
 .forecastGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
   margin-top: 1rem;
 }
 
 .forecastCard {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 1rem;
+  padding: 1.5rem;
+  background: var(--card-background);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
   text-align: center;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+}
+
+.forecastCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dayName {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
 }
 
 .icon {
-  width: 50px;
-  height: 50px;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto;
 }
 
 .temp {
   font-size: 1.5rem;
   font-weight: bold;
+  color: var(--primary-color);
   margin: 0.5rem 0;
 }
 
 .description {
-  color: #666;
+  color: var(--text-secondary);
   font-size: 0.9rem;
+  text-transform: capitalize;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .forecastGrid {
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
   }
 } 
