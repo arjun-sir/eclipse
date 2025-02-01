@@ -1,0 +1,7 @@
+/* src/components/ErrorDisplay.module.css */
+.error {
+    color: red;
+    text-align: center;
+    margin: 1rem;
+  }
+  

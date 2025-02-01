@@ -1,0 +1,27 @@
+/* src/components/SearchInput.module.css */
+.form {
+    display: flex;
+    justify-content: center;
+    margin: 1rem;
+  }
+  
+  .input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+  }
+  
+  .button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #0077cc;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #005fa3;
+  }
+  
