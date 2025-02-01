@@ -1,43 +1,39 @@
 // src/hooks/useWeatherApi.js
-import { useState, useEffect, useCallback } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 const API_KEY = import.meta.env.VITE_APP_API_KEY; // Replace with your OpenWeatherMap API key
 
-const useWeatherApi = (city) => {
-  const [weather, setWeather] = useState(null);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+const fetchWeather = async ({ city, unit }) => {
+  if (!city) return null;
+  
+  const response = await fetch(
+    `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=${unit}`
+  );
+  
+  if (!response.ok) {
+    throw new Error('City not found or API error.');
+  }
+  
+  const data = await response.json();
+  localStorage.setItem('lastCity', city);
+  return data;
+};
 
-  const fetchWeather = useCallback(async () => {
-    if (!city) return;
-    setLoading(true);
-    setError('');
-    try {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`
-      );
-      if (!response.ok) {
-        throw new Error('City not found or API error.');
-      }
-      const data = await response.json();
-      setWeather(data);
-      // Save last searched city to localStorage
-      localStorage.setItem('lastCity', city);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [city]);
+const useWeatherApi = (city, unit) => {
+  const { data: weather, error, isLoading, refetch } = useQuery({
+    queryKey: ['weather', city, unit],
+    queryFn: () => fetchWeather({ city, unit }),
+    enabled: Boolean(city),
+    refetchInterval: 30000, // Refetch every 30 seconds
+    retry: false,
+  });
 
-  // Fetch on city change and set up polling
-  useEffect(() => {
-    fetchWeather();
-    const intervalId = setInterval(fetchWeather, 30000); // polling every 30 seconds
-    return () => clearInterval(intervalId);
-  }, [fetchWeather]);
-
-  return { weather, error, loading, refetch: fetchWeather };
+  return {
+    weather,
+    error: error?.message,
+    loading: isLoading,
+    refetch,
+  };
 };
 
 export default useWeatherApi;

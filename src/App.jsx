@@ -7,9 +7,9 @@ import useWeatherApi from './hooks/useWeatherApi';
 import { WeatherContext } from './context/WeatherContext';
 
 const App = () => {
-  const { city, setCity } = useContext(WeatherContext);
+  const { city, setCity, unit, setUnit } = useContext(WeatherContext);
   const [searchCity, setSearchCity] = useState(city);
-  const { weather, error, loading, refetch } = useWeatherApi(searchCity);
+  const { weather, error, loading } = useWeatherApi(searchCity, unit);
 
   // When context city changes (for example, on load), update searchCity so hook runs
   useEffect(() => {
@@ -23,13 +23,22 @@ const App = () => {
     setSearchCity(newCity);
   };
 
+  const toggleUnit = () => {
+    setUnit(unit === 'metric' ? 'imperial' : 'metric');
+  };
+
   return (
     <div>
       <h1 style={{ textAlign: 'center' }}>React Weather Dashboard</h1>
+      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+        <button onClick={toggleUnit}>
+          Switch to {unit === 'metric' ? '°F' : '°C'}
+        </button>
+      </div>
       <SearchInput onSearch={handleSearch} />
       {loading && <p style={{ textAlign: 'center' }}>Loading...</p>}
       <ErrorDisplay message={error} />
-      {weather && !error && <WeatherDisplay weather={weather} />}
+      {weather && !error && <WeatherDisplay weather={weather} unit={unit} />}
     </div>
   );
 };

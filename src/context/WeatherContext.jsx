@@ -8,9 +8,18 @@ export const WeatherProvider = ({ children }) => {
     // Load last searched city from localStorage on initial load
     return localStorage.getItem('lastCity') || '';
   });
+  
+  const [unit, setUnit] = useState(() => {
+    return localStorage.getItem('tempUnit') || 'metric';
+  });
+
+  // Save unit preference when it changes
+  useEffect(() => {
+    localStorage.setItem('tempUnit', unit);
+  }, [unit]);
 
   return (
-    <WeatherContext.Provider value={{ city, setCity }}>
+    <WeatherContext.Provider value={{ city, setCity, unit, setUnit }}>
       {children}
     </WeatherContext.Provider>
   );
