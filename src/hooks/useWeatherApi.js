@@ -1,7 +1,7 @@
 // src/hooks/useWeatherApi.js
 import { useState, useEffect, useCallback } from 'react';
 
-const API_KEY = 'YOUR_API_KEY'; // Replace with your OpenWeatherMap API key
+const API_KEY = import.meta.env.VITE_APP_API_KEY; // Replace with your OpenWeatherMap API key
 
 const useWeatherApi = (city) => {
   const [weather, setWeather] = useState(null);
