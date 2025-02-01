@@ -1,15 +1,16 @@
 // src/components/SearchInput.jsx
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { WeatherContext } from '../../context/WeatherContext';
 import styles from './SearchInput.module.css'; // Create this CSS module
 
 const SearchInput = ({ onSearch }) => {
-  const [city, setCity] = useState('');
+  const { city } = useContext(WeatherContext);
+  const [searchValue, setSearchValue] = useState(city);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (city.trim() !== '') {
-      onSearch(city);
-      // setCity('');
+    if (searchValue.trim() !== '') {
+      onSearch(searchValue);
     }
   };
 
@@ -18,8 +19,8 @@ const SearchInput = ({ onSearch }) => {
       <input
         type="text"
         placeholder="Enter city name"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
         className={styles.input}
       />
       <button type="submit" className={styles.button}>Search</button>
